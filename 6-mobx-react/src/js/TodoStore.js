@@ -3,6 +3,7 @@ import { computed, observable } from "mobx";
 class TodoStore {
   @observable todos = ["by milk", "buy eggs", "buy apples"];
   @observable filter = "";
+  @observable ex = {rates: {}};
 
   @computed get filteredTodos() {
     var matchesFilter = new RegExp(this.filter, "i", )
