@@ -3,15 +3,39 @@ import { observer } from "mobx-react"
 
 @observer
 export default class TodoList extends React.Component {
+
+  Todos = this.props.store;
+
+  createNew(e, val) {
+    if(e.which === 13) {
+      this.props.store.createTodo(this.refs.createNewInput.value);
+      e.target.value = "";
+    }
+  }
+
+  toggleComplete(todo) {
+    todo.complete = !todo.complete;
+
+  }
+
+  createNewClick = (e, val) => {
+      this.props.store.createTodo(this.refs.createNewInput.value);
+      this.refs.createNewInput.value = "";
+  }
+
+
+
   filter(e) {
     this.props.store.filter = e.target.value;
   }
   render() {
-    const { filter, filteredTodos, todos } = this.props.store;
-
+    const { filter, filteredTodos, todos, clearComplete } = this.props.store;
     const todoList = filteredTodos.map(
       (todo, i) => (
-        <li key={i}>{todo}</li>
+        <li key={todo.id}>{todo.value}
+          <input type="checkbox" value={todo.complete} onChange={this.toggleComplete.bind(this, todo) } checked={todo.complete} />
+          <input type="button" onClick={() => this.Todos.delete(todo) } value="X" />
+        </li>
       )
     );
 
@@ -19,11 +43,14 @@ export default class TodoList extends React.Component {
       <div>
         <h1>MobX2</h1>
         <b>{filter}</b><br></br>
-        <input classname="filter" value={filter} onChange={this.filter.bind(this)}></input>
+        Create new: <input className="create" ref="createNewInput"  />
+            <button onClick={(e) => {this.Todos.create(this.refs.createNewInput.value); this.refs.createNewInput.value;}}>Create</button><br /><br />
+        Search: <input className="filter" value={filter} onChange={this.filter.bind(this)} /> <br />
         <ul>
             {todoList}
 
         </ul>
+        <button onClick={clearComplete}>Clear Complete</button>
 
       </div>);
 
