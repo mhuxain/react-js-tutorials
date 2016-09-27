@@ -6,24 +6,9 @@ export default class TodoList extends React.Component {
 
   Todos = this.props.store;
 
-  createNew(e, val) {
-    if(e.which === 13) {
-      this.props.store.createTodo(this.refs.createNewInput.value);
-      e.target.value = "";
-    }
-  }
-
   toggleComplete(todo) {
     todo.complete = !todo.complete;
-
   }
-
-  createNewClick = (e, val) => {
-      this.props.store.createTodo(this.refs.createNewInput.value);
-      this.refs.createNewInput.value = "";
-  }
-
-
 
   filter(e) {
     this.props.store.filter = e.target.value;
@@ -44,8 +29,8 @@ export default class TodoList extends React.Component {
         <h1>MobX2</h1>
         <b>{filter}</b><br></br>
         Create new: <input className="create" ref="createNewInput"  />
-            <button onClick={(e) => {this.Todos.create(this.refs.createNewInput.value); this.refs.createNewInput.value;}}>Create</button><br /><br />
-        Search: <input className="filter" value={filter} onChange={this.filter.bind(this)} /> <br />
+      <button onClick={(e) => {this.Todos.create(this.refs.createNewInput.value); this.refs.createNewInput.value = "";}}>Create</button><br /><br />
+        Search: <input className="filter" value={filter} onChange={(e) => this.filter(e)} /> <br />
         <ul>
             {todoList}
 
